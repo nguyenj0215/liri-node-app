@@ -8,23 +8,31 @@ var userInput = process.argv.slice(3).join(" ")
 var moment = require('moment');
 var axios = require("axios");
 var request = require('request')
+var fs = require("fs");
 var keys = require("./keys");
 var Spotify = require("node-spotify-api")
 var spotify = new Spotify(keys.spotify);
 
+startLiri(userCommand, userInput)
+
 //switch/case to run proper function with user command argument
-switch (userCommand) {
-    case 'concert-this':
-        concertThis(userInput)
-        break;
-    case 'spotify-this-song':
-        spotifyThis(userInput)
-        break;
-    case 'movie-this':
-        movieThis(userInput)
-        break;
-    default:
-        console.log("Not one of liris functions")
+function startLiri(userCommand, userInput) {
+    switch (userCommand) {
+        case 'concert-this':
+            concertThis(userInput)
+            break;
+        case 'spotify-this-song':
+            spotifyThis(userInput)
+            break;
+        case 'movie-this':
+            movieThis(userInput)
+            break;
+        case 'do-what-it-says':
+            doRandomTxt()
+            break;
+        default:
+            console.log("Not one of liris functions")
+    }
 }
 
 //concert-this input at process.argv[2] with artist/band name at process.argv[3]
@@ -40,6 +48,12 @@ function concertThis(userInput) {
                 console.log("Venue location: " + concertInfo[i].venue.city)
                 var formatDate = moment(concertInfo[i].datetime).format('MM/DD/YYYY')
                 console.log("Date: " + formatDate)
+
+                //log text 
+                fs.appendFileSync("log.txt", concertInfo[i].venue.name + " , ")
+                fs.appendFileSync("log.txt", concertInfo[i].venue.city + " , ")
+                fs.appendFileSync("log.txt", formatDate + " , ")
+                
             }
         } else {
             console.log("Error")
@@ -56,7 +70,7 @@ function concertThis(userInput) {
 
 function spotifyThis(userInput) {
     //default for no song 
-    if (userInput === undefined) {
+    if (!userInput || userInput === undefined) {
         userInput = "The Sign Ace of Base"
     }
 
@@ -67,7 +81,7 @@ function spotifyThis(userInput) {
         },
         function (error, data) {
             if (error) {
-                console.log("Error")
+                console.log("Error: " + error)
                 return
             }
             var songInfo = data.tracks.items
@@ -77,6 +91,11 @@ function spotifyThis(userInput) {
                 console.log("Song name: " + songInfo[j].name)
                 console.log("Preview link : " + songInfo[j].preview_url)
                 console.log("Song album: " + songInfo[j].album.name)
+
+                fs.appendFileSync("log.txt",  songInfo[j].artists[0].name + " , ")
+                fs.appendFileSync("log.txt",  songInfo[j].name + " , ")
+                fs.appendFileSync("log.txt",  songInfo[j].preview_url + " , ")
+                fs.appendFileSync("log.txt",  songInfo[j].album.name + " , ")
             }
         }
     )
@@ -87,6 +106,11 @@ function spotifyThis(userInput) {
 //default for no movie name input is Mr.Nobody
 //omdb api with trilogy api key
 function movieThis() {
+
+    //Default to Mr.Nobody
+    if (!userInput || userInput === undefined) {
+        userInput = "Mr.Nobody"
+    }
     var queryUrl2 = "http://www.omdbapi.com/?t=" + userInput + "&y=&plot=short&apikey=trilogy";
 
     axios.get(queryUrl2).then(
@@ -100,6 +124,17 @@ function movieThis() {
             console.log("Language: " + movieInfo.Language)
             console.log("Plot: " + movieInfo.Plot)
             console.log("Actors: " + movieInfo.Actors)
+
+            fs.appendFileSync("log.txt",  movieInfo.Title + " , ")
+            fs.appendFileSync("log.txt",  movieInfo.Year + " , ")
+            fs.appendFileSync("log.txt",  movieInfo.imdbRating + " , ")
+            fs.appendFileSync("log.txt",  movieInfo.Ratings[1] + " , ")
+            fs.appendFileSync("log.txt",  movieInfo.Country + " , ")
+            fs.appendFileSync("log.txt",  movieInfo.Language + " , ")
+            fs.appendFileSync("log.txt",  movieInfo.Plot + " , ")
+            fs.appendFileSync("log.txt",  movieInfo.Actors + " , ")
+
+
         })
         .catch(function (error) {
             if (error.response) {
@@ -116,4 +151,16 @@ function movieThis() {
             }
             console.log(error.config);
         });
+}
+
+//take text from random.txt and use to run function using fs package
+function doRandomTxt() {
+    fs.readFile("random.txt", "utf8", function (error, data) {
+        if (error) {
+            console.log("Error: " + error)
+            return
+        }
+        var dataArr = data.split(",");
+        startLiri(dataArr[0], dataArr[1])
+    })
 }
