@@ -4,7 +4,8 @@ require("dotenv").config();
 var userCommand = process.argv[2];
 var userInput = process.argv[3];
 
-var keys = require("./keys.js");
+var request = require('request')
+var keys = require("./keys");
 var Spotify = require("node-spotify-api")
 var spotify = new Spotify(keys.spotify);
 
@@ -28,9 +29,19 @@ switch (userCommand) {
 function concertThis(userInput) {
     var queryUrl = "https://rest.bandsintown.com/artists/" + userInput + "/events?app_id=codingbootcamp"
 
-    request(queryUrl, function(response) {
-        
+    request(queryUrl, function (error, response, body) {
+        if (!error) {
+            var concertInfo = JSON.parse(body)
+            for (var i = 0; i < concertInfo.length; i++) {
+                console.log("Venue name: " + concertInfo[i].venue.name)
+                console.log("Venue location: " + concertInfo[i].venue.city)
+                console.log("Date: " + concertInfo[i].datetime)
+            }
+        } else {
+            console.log("Error")
+        }
     })
+
 }
 
 //spotify-this-song input at process.argv[2] with song name at process.argv[3]
