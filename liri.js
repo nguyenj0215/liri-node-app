@@ -6,6 +6,7 @@ var userCommand = process.argv[2];
 var userInput = process.argv.slice(3).join(" ")
 
 var moment = require('moment');
+var axios = require("axios");
 var request = require('request')
 var keys = require("./keys");
 var Spotify = require("node-spotify-api")
@@ -64,14 +65,14 @@ function spotifyThis(userInput) {
             type: "track",
             query: userInput
         },
-        function(error, data) {
+        function (error, data) {
             if (error) {
                 console.log("Error")
                 return
             }
             var songInfo = data.tracks.items
 
-            for (var j=0;j<songInfo.length;j++){
+            for (var j = 0; j < songInfo.length; j++) {
                 console.log("Song artist: " + songInfo[j].artists[0].name)
                 console.log("Song name: " + songInfo[j].name)
                 console.log("Preview link : " + songInfo[j].preview_url)
@@ -85,3 +86,34 @@ function spotifyThis(userInput) {
 //display: title,release year,IMDB rating,rotten tom rating, country produced,language, plot,actors
 //default for no movie name input is Mr.Nobody
 //omdb api with trilogy api key
+function movieThis() {
+    var queryUrl2 = "http://www.omdbapi.com/?t=" + userInput + "&y=&plot=short&apikey=trilogy";
+
+    axios.get(queryUrl2).then(
+        function (response) {
+            var movieInfo = response.data
+            console.log("Movie title: " + movieInfo.Title)
+            console.log("Release Year: " + movieInfo.Year)
+            console.log("IMDB Rating: " + movieInfo.imdbRating)
+            console.log("Rotten Tomatoes Rating: " + movieInfo.Ratings[1])
+            console.log("Country Produced: " + movieInfo.Country)
+            console.log("Language: " + movieInfo.Language)
+            console.log("Plot: " + movieInfo.Plot)
+            console.log("Actors: " + movieInfo.Actors)
+        })
+        .catch(function (error) {
+            if (error.response) {
+                console.log("---------------Data---------------");
+                console.log(error.response.data);
+                console.log("---------------Status---------------");
+                console.log(error.response.status);
+                console.log("---------------Status---------------");
+                console.log(error.response.headers);
+            } else if (error.request) {
+                console.log(error.request);
+            } else {
+                console.log("Error", error.message);
+            }
+            console.log(error.config);
+        });
+}
