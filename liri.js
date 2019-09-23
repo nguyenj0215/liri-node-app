@@ -50,9 +50,9 @@ function concertThis(userInput) {
                 console.log("Date: " + formatDate)
 
                 //log text 
-                fs.appendFileSync("log.txt", concertInfo[i].venue.name + " , ")
-                fs.appendFileSync("log.txt", concertInfo[i].venue.city + " , ")
-                fs.appendFileSync("log.txt", formatDate + " , ")
+                fs.appendFileSync("log.txt", "\r\n\r\n" + concertInfo[i].venue.name + " , ")
+                fs.appendFileSync("log.txt", "\r\n" + concertInfo[i].venue.city + " , ")
+                fs.appendFileSync("log.txt", "\r\n" + formatDate + " , ")
                 
             }
         } else {
@@ -92,10 +92,10 @@ function spotifyThis(userInput) {
                 console.log("Preview link : " + songInfo[j].preview_url)
                 console.log("Song album: " + songInfo[j].album.name)
 
-                fs.appendFileSync("log.txt",  songInfo[j].artists[0].name + " , ")
-                fs.appendFileSync("log.txt",  songInfo[j].name + " , ")
-                fs.appendFileSync("log.txt",  songInfo[j].preview_url + " , ")
-                fs.appendFileSync("log.txt",  songInfo[j].album.name + " , ")
+                fs.appendFileSync("log.txt",  "\r\n\r\n" + songInfo[j].artists[0].name + " , ")
+                fs.appendFileSync("log.txt",  "\r\n" + songInfo[j].name + " , ")
+                fs.appendFileSync("log.txt",  "\r\n" + songInfo[j].preview_url + " , ")
+                fs.appendFileSync("log.txt",  "\r\n" + songInfo[j].album.name + " , ")
             }
         }
     )
@@ -125,14 +125,14 @@ function movieThis() {
             console.log("Plot: " + movieInfo.Plot)
             console.log("Actors: " + movieInfo.Actors)
 
-            fs.appendFileSync("log.txt",  movieInfo.Title + " , ")
-            fs.appendFileSync("log.txt",  movieInfo.Year + " , ")
-            fs.appendFileSync("log.txt",  movieInfo.imdbRating + " , ")
-            fs.appendFileSync("log.txt",  movieInfo.Ratings[1] + " , ")
-            fs.appendFileSync("log.txt",  movieInfo.Country + " , ")
-            fs.appendFileSync("log.txt",  movieInfo.Language + " , ")
-            fs.appendFileSync("log.txt",  movieInfo.Plot + " , ")
-            fs.appendFileSync("log.txt",  movieInfo.Actors + " , ")
+            fs.appendFileSync("log.txt",  "\r\n\r\n" + movieInfo.Title + " , ")
+            fs.appendFileSync("log.txt",  "\r\n" + movieInfo.Year + " , ")
+            fs.appendFileSync("log.txt",  "\r\n" + movieInfo.imdbRating + " , ")
+            fs.appendFileSync("log.txt",  "\r\n" + movieInfo.Ratings[1] + " , ")
+            fs.appendFileSync("log.txt",  "\r\n" + movieInfo.Country + " , ")
+            fs.appendFileSync("log.txt",  "\r\n" + movieInfo.Language + " , ")
+            fs.appendFileSync("log.txt",  "\r\n" + movieInfo.Plot + " , ")
+            fs.appendFileSync("log.txt",  "\r\n" + movieInfo.Actors + " , ")
 
 
         })
