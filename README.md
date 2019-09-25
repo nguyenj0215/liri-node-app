@@ -16,5 +16,8 @@ Requests should be formatted in the following way:
 
 Link to the github repo: [GitHub Repo](https://github.com/nguyenj0215/liri-node-app)
 
-Screenshots:
-Format: ![Spotify-this](/spotify.png)
+Screenshots: 
+1) ![Spotify-this](/spotify.png)
+2) ![Spotify-this](/concert.png)
+3) ![Spotify-this](/movie.png)
+4) ![Spotify-this](/doit.png)
