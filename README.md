@@ -17,7 +17,11 @@ Requests should be formatted in the following way:
 Link to the github repo: [GitHub Repo](https://github.com/nguyenj0215/liri-node-app)
 
 Screenshots: 
-1) ![Spotify-this](/spotify.png)
-2) ![Spotify-this](/concert.png)
-3) ![Spotify-this](/movie.png)
-4) ![Spotify-this](/doit.png)
+spotify-this-song:
+![Spotify-this](/spotify.png)
+concert-this:
+![Concert-this](/concert.png)
+movie-this:
+![Movie-this](/movie.png)
+do-what-it-says:
+![Do-what-it-says](/doit.png)
